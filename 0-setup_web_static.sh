@@ -1,6 +1,21 @@
 #!/usr/bin/env bash
 # sets up your web servers for the deployment of web_static
+##!/usr/bin/env bash
+# This script is displaying "Best School" 10 times
+# whith "Hi" at the ninth time
+# shellcheck disable=SC2154
+str="Best School"
+i=0
+while [[ $i -lt 10 ]]
+do
+	echo "$str"
+	if [ $i -eq 8 ]
+	then
+		echo "Hi"
+	fi
 
+	(( i += 1 ))
+done
 #check if nginx is installed
 if command -v nginx >> /dev/null
 then
