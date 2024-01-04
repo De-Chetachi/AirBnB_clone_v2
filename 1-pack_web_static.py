@@ -2,7 +2,9 @@
 from fabric.api import local
 from datetime import datetime
 import os
-'''this module is a  Fabric script that generates a .tgz archive from the contents of the web_static folder of this AirBnB Clone repo, using the function do_pack'''
+'''this module is a  Fabric script that generates a .tgz archive
+from the contents of the web_static folder of this AirBnB Clone
+repo, using the function do_pack'''
 
 
 def do_pack():
