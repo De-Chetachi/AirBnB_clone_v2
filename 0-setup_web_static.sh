@@ -26,9 +26,40 @@ chown -R ubuntu:ubuntu /data/
 #note using root path is root + location 
 #using alias replaces the path with the alias
 
-new_loca="\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/\n\t}\n"
+echo "
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
 
-sed -i "11s|.*|$new_loca|" /etc/nginx/sites-available/default
+
+	root /var/www/html;
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name _;
+
+	location /hbnb_static {
+		alias /data/web_static/current/
+	}
+
+	location /redirect_me {
+		return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+	}
+
+	error_page 404 /custom_404.html;
+	location = /custom_404.html {
+		root /var/www/html;
+		internal;
+	}
+
+	location / {
+		# First attempt to serve request as file, then
+		# First attempt to serve request as file, then
+		try_files $uri $uri/ =404;
+	}
+
+	add_header X-Served-By 412636-web-01;
+
+}" > /etc/nginx/sites-available/default
 
 service nginx restart
 
