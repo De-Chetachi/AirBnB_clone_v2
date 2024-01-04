@@ -25,7 +25,8 @@ chown -R ubuntu:ubuntu /data/
 #note using root path is root + location 
 #using alias replaces the path with the alias
 
-echo "server {
+echo "
+server {
 	listen 80 default_server;
 	listen [::]:80 default_server;
 
@@ -36,7 +37,7 @@ echo "server {
 	server_name _;
 
 	location /hbnb_static {
-		alias /data/web_static/current/;
+		alias /data/web_static/current/
 	}
 
 	location /redirect_me {
@@ -55,7 +56,7 @@ echo "server {
 		try_files $uri $uri/ =404;
 	}
 
-	add_header X-Served-By $(hostname);
+	add_header X-Served-By 412636-web-01;
 
 }" > /etc/nginx/sites-available/default
 
