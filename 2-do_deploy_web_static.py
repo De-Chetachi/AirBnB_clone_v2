@@ -1,4 +1,4 @@
-#!/usr/b0-setup_web_static.shin/python3
+#!/usr/bin/python3
 from fabric.api import local, run, put, env
 from datetime import datetime
 import os
