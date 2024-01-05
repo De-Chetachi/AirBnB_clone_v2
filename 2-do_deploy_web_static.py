@@ -25,8 +25,10 @@ def do_pack():
         print("web_static packed: {} -> {}Bytes".format(archive_path, size))
         return archive_path
 
+
 env.user = 'ubuntu'
 env.hosts = ['35.153.93.19', '54.172.31.233']
+
 
 def do_deploy(archive_path):
     '''distributes an archive to your web servers'''
