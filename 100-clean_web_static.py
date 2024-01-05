@@ -68,7 +68,8 @@ def do_clean(number=0):
 
     if int(number) < 2:
         number = 1
-    number = int(number)
+    else:
+        number = int(number)
 
     with lcd("versions"):
         local("ls | head -n -{} | ".format(number) + "xargs -I{} rm {}")
