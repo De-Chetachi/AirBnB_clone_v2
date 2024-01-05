@@ -16,6 +16,7 @@ def do_pack():
     archive_name = "web_static_{}.tgz".format(timestamp)
     archive_path = "versions/{}".format(archive_name)
     archive_source = "web_static"
+    print("Packing web_static to {}".format(archive_path))
     x = local("tar -cvzf {} {}".format(archive_path, archive_source))
 
     if x.failed:
@@ -43,7 +44,8 @@ def do_deploy(archive_path):
         run("mv {}/web_static/* {}".format(upload_path, upload_path))
         run("rm -rf {}/web_static".format(upload_path))
         run("rm -rf /data/web_static/current")
-        run("ln -sf {} /data/web_static/current".format(upload_path))
+        run("ln -s {} /data/web_static/current".format(upload_path))
+        print("New version deployed!")
         return True
 
     except Exception as e:
@@ -57,3 +59,16 @@ def deploy():
     if arch_path is None:
         return False
     return do_deploy(arch_path)
+
+def do_clean(number=0):
+    '''deletes out-of-date archives
+    leaving "number" number of archive if number is >= 2
+    else one archive'''
+
+    if number < 2:
+        number = 1
+
+    with lcd("versions"):
+        local("ls | head -n -{} | xargs -I{} rm {}".format(number))
+    with cd("/data/web_static/releases"):
+        run("ls | head -n -{} | xargs -I{} rm {}".format(number))
