@@ -1,6 +1,21 @@
 #!/usr/bin/env bash
 # sets up your web servers for the deployment of web_static
+##!/usr/bin/env bash
+# This script is displaying "Best School" 10 times
+# whith "Hi" at the ninth time
+# shellcheck disable=SC2154
+str="Best School"
+i=0
+while [[ $i -lt 10 ]]
+do
+	echo "$str"
+	if [ $i -eq 8 ]
+	then
+		echo "Hi"
+	fi
 
+	(( i += 1 ))
+done
 #check if nginx is installed
 if command -v nginx >> /dev/null
 then
@@ -25,8 +40,7 @@ chown -R ubuntu:ubuntu /data/
 #note using root path is root + location 
 #using alias replaces the path with the alias
 
-echo "
-server {
+echo "server {
 	listen 80 default_server;
 	listen [::]:80 default_server;
 
@@ -37,7 +51,7 @@ server {
 	server_name _;
 
 	location /hbnb_static {
-		alias /data/web_static/current/
+		alias /data/web_static/current/;
 	}
 
 	location /redirect_me {
@@ -56,7 +70,7 @@ server {
 		try_files $uri $uri/ =404;
 	}
 
-	add_header X-Served-By 412636-web-01;
+	add_header X-Served-By $(hostname);
 
 }" > /etc/nginx/sites-available/default
 
