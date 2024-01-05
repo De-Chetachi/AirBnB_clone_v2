@@ -16,7 +16,6 @@ def do_pack():
     archive_name = "web_static_{}.tgz".format(timestamp)
     archive_path = "versions/{}".format(archive_name)
     archive_source = "web_static"
-    print("Packing web_static to {}".format(archive_path))
     x = local("tar -cvzf {} {}".format(archive_path, archive_source))
 
     if x.failed:
@@ -45,7 +44,6 @@ def do_deploy(archive_path):
         run("rm -rf {}/web_static".format(upload_path))
         run("rm -rf /data/web_static/current")
         run("ln -sf {} /data/web_static/current".format(upload_path))
-        print("New version deployed!")
         return True
 
     except Exception as e:
