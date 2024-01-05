@@ -1,5 +1,5 @@
 #!/usr/b0-setup_web_static.shin/python3
-from fabric.api import local run put
+from fabric.api import local, run, put, env
 from datetime import datetime
 import os
 '''this module is a  Fabric script that generates a .tgz archive
@@ -25,13 +25,13 @@ def do_pack():
         print("web_static packed: {} -> {}Bytes".format(archive_path, size))
         return archive_path
 
-env.users = ['ubuntu']
+env.user = 'ubuntu'
 env.hosts = ['35.153.93.19', '54.172.31.233']
 
 def do_deploy(archive_path):
     '''distributes an archive to your web servers'''
     try:
-        arch = archive_path.split(/)[-1]
+        arch = archive_path.split("/")[-1]
         archive_ = arch.split(".")[0]
         put(archive_path, "/tmp/")
         upload_path = "/data/web_static/releases/{}".format(archive_)
@@ -39,8 +39,8 @@ def do_deploy(archive_path):
         run("tar -xvzf /tmp/{} -C {}".format(arch, upload_path))
         run("rm /tmp/{}".format(arch))
         run("mv {}/web_static/* {}".format(upload_path, upload_path))
-        rum("rm -rf {}/web_static".format(upload_path))
-        run("rm -rf/data/web_static/current")
+        run("rm -rf {}/web_static".format(upload_path))
+        run("rm -rf /data/web_static/current")
         run("ln -sf {} /data/web_static/current".format(upload_path))
         return True
 
