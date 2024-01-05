@@ -66,8 +66,9 @@ def do_clean(number=0):
     leaving "number" number of archive if number is >= 2
     else one archive'''
 
-    if number < 2:
+    if int(number) < 2:
         number = 1
+    number = int(number)
 
     with lcd("versions"):
         local("ls | head -n -{} | ".format(number) + "xargs -I{} rm {}")
