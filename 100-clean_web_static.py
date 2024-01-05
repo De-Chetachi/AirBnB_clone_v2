@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from fabric.api import local, run, put, env
+from fabric.api import local, run, put, env, lcd, cd
 from datetime import datetime
 import os
 '''this module is a  Fabric script that generates a .tgz archive
@@ -60,6 +60,7 @@ def deploy():
         return False
     return do_deploy(arch_path)
 
+
 def do_clean(number=0):
     '''deletes out-of-date archives
     leaving "number" number of archive if number is >= 2
@@ -69,6 +70,6 @@ def do_clean(number=0):
         number = 1
 
     with lcd("versions"):
-        local("ls | head -n -{} | xargs -I{} rm {}".format(number))
-    with cd("/data/web_static/releases"):
-        run("ls | head -n -{} | xargs -I{} rm {}".format(number))
+        local("ls | head -n -{} | ".format(number) + "xargs -I{} rm {}")
+    with cd("/data/web_static/releases/"):
+        run("ls | head -n -{} | ".format(number) + "xargs -I{} rm -rf {}")
