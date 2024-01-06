@@ -1,5 +1,5 @@
 #using puppet to set up my web servers for the deployment of web_static
-
+#syntax error missed a : in line 44
 exec { 'update':
   command => '/usr/bin/apt-get update',
 }
