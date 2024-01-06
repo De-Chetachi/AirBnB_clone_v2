@@ -9,6 +9,14 @@ package { 'nginx':
 }
 
 file { '/data':
+  path => '/data',
+  ensure => 'directory',
+  owner => 'ubuntu',
+  group => 'ubuntu',
+}
+
+file { '/data/web_static/releases/test':
+  path => '/data/web_static/releases/test',
   ensure => 'directory',
   owner => 'ubuntu',
   group => 'ubuntu',
@@ -39,7 +47,7 @@ file_line { 'hbnb_static'
 }
 
 exec {'restart':
-  command => '/usr/sbin/service nginx retart',
+  command => '/usr/sbin/service nginx restart',
 }
 
 service { 'nginx':
