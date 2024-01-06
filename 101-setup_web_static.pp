@@ -8,43 +8,34 @@ package { 'nginx':
   ensure => installed,
 }
 
-file { '/data':
-  path => '/data',
-  ensure => 'directory',
-  owner => 'ubuntu',
-  group => 'ubuntu',
-  recurse => true,
+exec { '/data':
+  command => 'mkdir -p "/data/web_static/shared/"',
 }
 
-file { '/data/web_static/releases/test':
-  path => '/data/web_static/releases/test',
-  ensure => 'directory',
-  owner => 'ubuntu',
-  group => 'ubuntu',
+exec { '/data/web_static/releases/test':
+  command => 'mkdir -p "/data/web_static/releases/test/"',
 }
 
-file { '/data/web_static/releases/test/index.html': 
-  path => '/data/web_static/releases/test/index.html',
-  ensure => 'file',
-  content => 'test nginx config',
+exec { 'html_content': 
+  command => 'echo "test nginx config" > "/data/web_static/releases/test/index.html"',
 }
 
-file { '/data/web_static/shared':
-  path => '/data/web_static/shared',
-  ensure => 'directory',
+exec { 'symlink':
+  command => 'ln -sf "/data/web_static/releases/test/" "/data/web_static/current"',
 }
 
-file { '/data/web_static/current/':
-  path => '/data/web_static/current',
-  ensure => link,
-  target => '/data/web_static/releases/test/',
+exec {'ownership':
+  command => 'chown -R ubuntu:ubuntu /data/',
 }
 
-file_line { 'hbnb_static':
+exec {'restart':
+  command => '/usr/sbin/service nginx restart',
+}
+
+file { 'hbnb_static':
   path => '/etc/nginx/sites-available/default',
   ensure => 'present',
-  after => 'server_name _;',
-  line => "\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}"
+  content => template('nginx_config'),
 }
 
 exec {'restart':
