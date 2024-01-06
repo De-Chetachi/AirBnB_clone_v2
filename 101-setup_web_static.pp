@@ -13,6 +13,7 @@ file { '/data':
   ensure => 'directory',
   owner => 'ubuntu',
   group => 'ubuntu',
+  recurse => true,
 }
 
 file { '/data/web_static/releases/test':
