@@ -40,8 +40,8 @@ file { '/data/web_static/current/':
   target => '/data/web_static/releases/test/',
 }
 
-file_line { 'hbnb_static'
-  path => '/etc/nginx/sites-available/nginx',
+file_line { 'hbnb_static':
+  path => '/etc/nginx/sites-available/default',
   ensure => 'present',
   after => 'server_name _;',
   line => "\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}"
