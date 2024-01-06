@@ -8,21 +8,21 @@ package { 'nginx':
   ensure => installed,
 }
 
-file { '/data/':
-  ensure => 'present',
+file { '/data':
+  ensure => 'directory',
   owner => 'ubuntu',
   group => 'ubuntu',
 }
 
 file { '/data/web_static/releases/test/index.html': 
   path => '/data/web_static/releases/test/index.html',
-  ensure => 'present',
+  ensure => 'file',
   content => 'test nginx config',
 }
 
-file { '/data/web_static/shared/':
-  path => '/data/web_static/shared/',
-  ensure => 'present',
+file { '/data/web_static/shared':
+  path => '/data/web_static/shared',
+  ensure => 'directory',
 }
 
 file { '/data/web_static/current/':
@@ -32,7 +32,7 @@ file { '/data/web_static/current/':
 }
 
 file_line { 'hbnb_static'
-  path => '',
+  path => '/etc/nginx/sites-available/nginx',
   ensure => 'present',
   after => 'server_name _;',
   line => "\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}"
