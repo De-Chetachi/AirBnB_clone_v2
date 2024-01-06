@@ -38,6 +38,10 @@ file_line { 'hbnb_static'
   line => "\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}"
 }
 
+exec {'restart':
+  command => '/usr/sbin/service nginx retart',
+}
+
 service { 'nginx':
   ensure => running,
   require => Package['nginx'],
