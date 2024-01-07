@@ -1,43 +1,29 @@
-#using puppet to set up my web servers for the deployment of web_static
-#syntax error missed a : in line 44
-exec { 'update':
+# instal and configure nginx
+exec {'update':
   command => '/usr/bin/apt-get update',
 }
 -> package { 'nginx':
-  require => Exec['update'],
   ensure => installed,
 }
-
--> exec { '/data':
-  command => 'mkdir -p "/data/web_static/shared/"',
+-> exec { 'run1':
+  command => '/usr/bin/mkdir -p "/data/web_static/releases/test/" "/data/web_static/shared/"',
 }
-
--> exec { '/data/web_static/releases/test':
-  command => 'mkdir -p "/data/web_static/releases/test/"',
+-> exec { 'run2':
+  command => '/usr/bin/echo "Hi!" | sudo tee /data/web_static/releases/test/index.html > /dev/null',
 }
-
--> exec { 'html_content': 
-  command => 'echo "test nginx config" > "/data/web_static/releases/test/index.html"',
+-> exec { 'run3':
+  command => '/usr/bin/rm -rf /data/web_static/current',
 }
-
--> exec { 'symlink':
-  command => 'ln -sf "/data/web_static/releases/test/" "/data/web_static/current"',
+-> exec { 'run4':
+  command => '/usr/bin/ln -s /data/web_static/releases/test/ /data/web_static/current',
 }
-
--> exec {'ownership':
-  command => 'chown -R ubuntu:ubuntu /data/',
+-> exec { 'run5':
+  command => '/usr/bin/chown -R ubuntu:ubuntu /data/',
 }
-
--> exec {'restart':
-  command => '/usr/sbin/service nginx restart',
+-> exec { 'hbnb_static':
+  command => 'sudo sed -i "/^server {/a \ \n\tlocation \/hbnb_static {alias /data/web_static/current/;index index.html;}" /etc/nginx/sites-enabled/default',
+  provider => shell,
 }
-
--> file { 'hbnb_static':
-  path => '/etc/nginx/sites-available/default',
-  ensure => 'present',
-  content => template('nginx_config'),
-}
-
--> exec {'restart':
+-> exec { 'run6':
   command => '/usr/sbin/service nginx restart',
 }
