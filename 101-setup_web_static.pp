@@ -20,11 +20,9 @@ exec { 'update':
 -> exec { 'ownership':
   command => '/usr/bin/chown -R ubuntu:ubuntu /data/',
 }
--> file { 'hbnb_static':
-  path => '/etc/nginx/sites-available/default',
-  ensure => 'present',
-  content => template('nginx_config'),
-}
+
+#/hbnb_static
+#not yet done
 -> exec { 'restart':
   command => '/usr/sbin/service nginx restart',
 }
