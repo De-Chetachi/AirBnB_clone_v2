@@ -1,29 +1,60 @@
-# instal and configure nginx
-exec {'update':
-  command => '/usr/bin/apt-get update',
-}
--> package { 'nginx':
-  ensure => installed,
-}
--> exec { 'run1':
-  command => '/usr/bin/mkdir -p "/data/web_static/releases/test/" "/data/web_static/shared/"',
-}
--> exec { 'run2':
-  command => '/usr/bin/echo "Hi!" | sudo tee /data/web_static/releases/test/index.html > /dev/null',
-}
--> exec { 'run3':
-  command => '/usr/bin/rm -rf /data/web_static/current',
-}
--> exec { 'run4':
-  command => '/usr/bin/ln -s /data/web_static/releases/test/ /data/web_static/current',
-}
--> exec { 'run5':
-  command => '/usr/bin/chown -R ubuntu:ubuntu /data/',
-}
--> exec { 'hbnb_static':
-  command => 'sudo sed -i "/^server {/a \ \n\tlocation \/hbnb_static {alias /data/web_static/current/;index index.html;}" /etc/nginx/sites-enabled/default',
-  provider => shell,
-}
--> exec { 'run6':
-  command => '/usr/sbin/service nginx restart',
-}
+#!/usr/bin/python3
+from fabric.api import local, run, put, env
+from datetime import datetime
+import os
+'''this module is a  Fabric script that generates a .tgz archive
+from the contents of the web_static folder of this AirBnB Clone
+repo, using the function do_pack'''
+
+
+def do_pack():
+    '''A function that generates an achieve from web_static'''
+
+    local("mkdir -p versions")
+    now = datetime.now()
+    timestamp = now.strftime("%Y%m%d%H%M%S")
+    archive_name = "web_static_{}.tgz".format(timestamp)
+    archive_path = "versions/{}".format(archive_name)
+    archive_source = "web_static"
+    print("Packing web_static to {}".format(archive_path))
+    x = local("tar -cvzf {} {}".format(archive_path, archive_source))
+
+    if x.failed:
+        return None
+    else:
+        size = os.path.getsize(archive_path)
+        print("web_static packed: {} -> {}Bytes".format(archive_path, size))
+        return archive_path
+
+
+env.hosts = ["35.153.93.19", "54.172.31.233"]
+
+
+def do_deploy(archive_path):
+    '''distributes an archive to your web servers'''
+    try:
+        arch = archive_path.split("/")[-1]
+        archive_ = arch.split(".")[0]
+        put(archive_path, "/tmp/")
+        upload_path = "/data/web_static/releases/{}".format(archive_)
+        run("mkdir -p {}".format(upload_path))
+        run("tar -xvzf /tmp/{} -C {}".format(arch, upload_path))
+        run("rm /tmp/{}".format(arch))
+        run("mv {}/web_static/* {}".format(upload_path, upload_path))
+        run("rm -rf {}/web_static".format(upload_path))
+        run("rm -rf /data/web_static/current")
+        run("ln -s {} /data/web_static/current".format(upload_path))
+        print("New version deployed!")
+        return True
+
+    except Exception as e:
+        return False
+
+
+def deploy():
+    '''creates and distributes an archive to your web servers
+    using the function deploy'''
+    arch_path = do_pack()
+    if arch_path is None:
+        return False
+    return do_deploy(arch_path)
