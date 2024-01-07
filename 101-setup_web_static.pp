@@ -5,7 +5,6 @@ exec { 'update':
 }
 
 -> package { 'nginx':
-  require => Exec['update'],
   ensure => installed,
 }
 
@@ -27,10 +26,6 @@ exec { 'update':
 
 -> exec {'ownership':
   command => '/usr/bin/chown -R ubuntu:ubuntu /data/',
-}
-
--> exec {'restart':
-  command => '/usr/sbin/service nginx restart',
 }
 
 -> file { 'hbnb_static':

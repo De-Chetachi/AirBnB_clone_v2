@@ -9,8 +9,8 @@ repo, using the function do_pack'''
 
 def do_pack():
     '''A function that generates an achieve from web_static'''
-    local("mkdir -p versions")
 
+    local("mkdir -p versions")
     now = datetime.now()
     timestamp = now.strftime("%Y%m%d%H%M%S")
     archive_name = "web_static_{}.tgz".format(timestamp)
@@ -27,8 +27,7 @@ def do_pack():
         return archive_path
 
 
-env.user = 'ubuntu'
-env.hosts = ['35.153.93.19', '54.172.31.233']
+env.hosts = ["35.153.93.19", "54.172.31.233"]
 
 
 def do_deploy(archive_path):
