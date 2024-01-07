@@ -8,15 +8,15 @@ exec { 'update':
   ensure => installed,
 }
 
--> exec { '/data':
+-> exec { 'data':
   command => '/usr/bin/mkdir -p "/data/web_static/shared/"',
 }
 
--> exec { '/data/web_static/releases/test':
+-> exec { 'test':
   command => '/usr/bin/mkdir -p "/data/web_static/releases/test/"',
 }
 
--> exec { 'html_content': 
+-> exec { 'htmlcontent': 
   command => '/usr/bin/echo "test nginx config" > "/data/web_static/releases/test/index.html"',
 }
 
@@ -24,7 +24,7 @@ exec { 'update':
   command => '/usr/bin/ln -sf "/data/web_static/releases/test/" "/data/web_static/current"',
 }
 
--> exec {'ownership':
+-> exec { 'ownership':
   command => '/usr/bin/chown -R ubuntu:ubuntu /data/',
 }
 
@@ -34,6 +34,6 @@ exec { 'update':
   content => template('nginx_config'),
 }
 
--> exec {'restart':
+-> exec { 'restart':
   command => '/usr/sbin/service nginx restart',
 }
