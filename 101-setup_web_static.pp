@@ -22,8 +22,7 @@ exec { 'update':
 }
 
 -> exec { 'hbnb_static':
-  sed -i /server_name _;/a  \n\tlocation /hbnb_static {alias /data/web_static/current/;\n\t} 
-
+  sed -i "/server_name _;/a  \n\tlocation /hbnb_static {alias /data/web_static/current/;\n\t}"  /etc/nginx/sites-available/default
 -> exec { 'restart':
   command => '/usr/sbin/service nginx restart',
 }
