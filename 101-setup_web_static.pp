@@ -21,9 +21,9 @@ exec { 'update':
   command => '/usr/bin/chown -R ubuntu:ubuntu /data/',
 }
 
--> exec { 'hbnb_static':
-  sed -i "/server_name _;/a  \n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}"  /etc/nginx/sites-available/default,
-}
+#-> exec { 'hbnb_static':
+#  sed -i "/server_name _;/a \n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}"  /etc/nginx/sites-available/default,
+#}
 -> exec { 'restart':
   command => '/usr/sbin/service nginx restart',
 }
