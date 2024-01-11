@@ -38,12 +38,12 @@ def do_deploy(archive_path):
         put(archive_path, "/tmp/{}".format(arch))
         upload_path = "/data/web_static/releases/{}".format(archive_)
         run("mkdir -p {}".format(upload_path))
-        run("tar -xvzf /tmp/{} -C {}".format(arch, upload_path))
+        run("tar -xvzf /tmp/{} -C {}/".format(arch, upload_path))
         run("rm /tmp/{}".format(arch))
-        run("mv {}/web_static/* {}".format(upload_path, upload_path))
+        run("mv {}/web_static/* {}/".format(upload_path, upload_path))
         run("rm -rf {}/web_static".format(upload_path))
         run("rm -rf /data/web_static/current")
-        run("ln -sf {} /data/web_static/current".format(upload_path))
+        run("ln -sf {}/ /data/web_static/current".format(upload_path))
         return True
 
     except Exception as e:

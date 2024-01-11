@@ -28,7 +28,7 @@ def do_pack():
 
 
 env.hosts = ['54.197.77.69', '18.233.67.26']
-
+env.user = 'ubuntu'
 
 def do_deploy(archive_path):
     '''distributes an archive to your web servers'''
@@ -38,12 +38,12 @@ def do_deploy(archive_path):
         put(archive_path, "/tmp/")
         upload_path = "/data/web_static/releases/{}".format(archive_)
         run("mkdir -p {}".format(upload_path))
-        run("tar -xvzf /tmp/{} -C {}".format(arch, upload_path))
+        run("tar -xvzf /tmp/{} -C {}/".format(arch, upload_path))
         run("rm /tmp/{}".format(arch))
-        run("mv {}/web_static/* {}".format(upload_path, upload_path))
+        run("mv {}/web_static/* {}/".format(upload_path, upload_path))
         run("rm -rf {}/web_static".format(upload_path))
         run("rm -rf /data/web_static/current")
-        run("ln -s {} /data/web_static/current".format(upload_path))
+        run("ln -s {}/ /data/web_static/current".format(upload_path))
         print("New version deployed!")
         return True
 
