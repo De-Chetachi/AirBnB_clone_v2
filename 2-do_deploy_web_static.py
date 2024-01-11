@@ -34,9 +34,7 @@ def do_deploy(archive_path):
     '''distributes an archive to your web servers'''
     try:
         arch = archive_path.split("/")[-1]
-        print(arch)
         archive_ = arch.split(".")[0]
-        print(archive_)
         put("{}, /tmp/".format(archive_path))
         upload_path = "/data/web_static/releases/{}".format(archive_)
         run("mkdir -p {}".format(upload_path))
@@ -49,5 +47,4 @@ def do_deploy(archive_path):
         return True
 
     except Exception as e:
-        print(e)
         return False
