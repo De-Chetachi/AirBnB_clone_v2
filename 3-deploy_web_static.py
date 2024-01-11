@@ -30,6 +30,7 @@ def do_pack():
 env.hosts = ['54.197.77.69', '18.233.67.26']
 env.user = 'ubuntu'
 
+
 def do_deploy(archive_path):
     '''distributes an archive to your web servers'''
     try:
