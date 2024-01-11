@@ -27,7 +27,7 @@ def do_pack():
         return archive_path
 
 
-env.hosts = ['100.25.205.8', '18.233.67.26']
+env.hosts = ['54.197.77.69', '18.233.67.26']
 
 
 def do_deploy(archive_path):
