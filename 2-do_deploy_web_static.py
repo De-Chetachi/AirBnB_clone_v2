@@ -35,7 +35,7 @@ def do_deploy(archive_path):
     try:
         arch = archive_path.split("/")[-1]
         archive_ = arch.split(".")[0]
-        put("{}, /tmp/".format(archive_path))
+        put(archive_path, "/tmp/{}".format(arch))
         upload_path = "/data/web_static/releases/{}".format(archive_)
         run("mkdir -p {}".format(upload_path))
         run("tar -xvzf /tmp/{} -C {}".format(arch, upload_path))
