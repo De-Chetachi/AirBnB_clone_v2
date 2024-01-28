@@ -7,8 +7,8 @@ from flask import Flask
 from flask import render_template
 # create an instance of the class
 app = Flask(__name__)
-app.jinja_env.lstrip_blocks = True
-app.jinja_env.trim_blocks = True
+#app.jinja_env.lstrip_blocks = True
+#app.jinja_env.trim_blocks = True
 
 
 @app.teardown_appcontext
