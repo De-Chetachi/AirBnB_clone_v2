@@ -44,6 +44,7 @@ def number_route(n):
     '''handles app logic for /number'''
     return f'{n} is a number'
 
+
 @app.route("/number_template/<int:n>", strict_slashes=False)
 def number_template_route(n):
     '''handles app logic for /number_template/<n>'''
