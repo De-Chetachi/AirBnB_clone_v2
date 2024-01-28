@@ -8,6 +8,7 @@ from flask import Flask
 # create an instance of the class
 app = Flask(__name__)
 
+
 # use the route decorator to tell flask which url(path) should use the root fxn
 @app.route("/", strict_slashes=False)
 def root():
