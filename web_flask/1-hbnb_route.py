@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 '''this module is a script that starts a flask web application'''
 
 # import the Flask class
