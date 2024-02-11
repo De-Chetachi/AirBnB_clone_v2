@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 '''this module is a script that starts a flask web application'''
-from json import dumps
 from models import storage
 from models.state import State
 # import the Flask class
@@ -21,12 +20,8 @@ def teardown(exception):
 @app.route("/states_list", strict_slashes=False)
 def states_list_route():
     '''handles the app logic for the root query (/states_list)'''
-    storage.reload()
     states = storage.all(State)
-    result = {}
-    for key, value in states.items():
-        result["{}".format(value.id)] = value.name
-    return render_template('7-states_list.html', states=result)
+    return render_template('7-states_list.html', states=states)
 
 
 if __name__ == "__main__":
