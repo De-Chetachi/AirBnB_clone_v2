@@ -46,22 +46,34 @@ class Place(BaseModel, Base):
         amenity_ids (list): An id list of all linked amenities.
     """
     __tablename__ = "places"
-    user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
-    city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
-    name = Column(String(128), nullable=False)
-    description = Column(String(1024))
-    number_rooms = Column(Integer, default=0)
-    number_bathrooms = Column(Integer, default=0)
-    max_guest = Column(Integer, default=0)
-    price_by_night = Column(Integer, default=0)
-    latitude = Column(Float)
-    longitude = Column(Float)
-    reviews = relationship("Review", backref="place", cascade="delete")
-    amenities = relationship("Amenity", secondary="place_amenity",
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
+        city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
+        name = Column(String(128), nullable=False)
+        description = Column(String(1024))
+        number_rooms = Column(Integer, default=0)
+        number_bathrooms = Column(Integer, default=0)
+        max_guest = Column(Integer, default=0)
+        price_by_night = Column(Integer, default=0)
+        latitude = Column(Float)
+        longitude = Column(Float)
+        reviews = relationship("Review", backref="place", cascade="delete")
+        amenities = relationship("Amenity", secondary="place_amenity",
                              viewonly=False, back_populates="place_amenities")
-    amenity_ids = []
-
-    if getenv("HBNB_TYPE_STORAGE", None) != "db":
+        amenity_ids = []
+    else:
+        city_id: str = ""
+        user_id: str = ""
+        name: str = ""
+        description: str = ""
+        number_rooms: int = 0
+        number_bathrooms: int = 0
+        max_guest: int = 0
+        price_by_night: int = 0
+        latitude: float = 0.0
+        longitude: float = 0.0
+        amenity_ids: list = []
+    
         @property
         def reviews(self):
             """Get a list of all linked Reviews."""
