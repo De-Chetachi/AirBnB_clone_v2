@@ -20,8 +20,12 @@ def teardown(exception):
 @app.route("/states_list", strict_slashes=False)
 def states_list_route():
     '''handles the app logic for the root query (/states_list)'''
-    states = storage.all(State)
-    return render_template('7-states_list.html', states=states)
+    storage.reload()
+    states = storage.all("State")
+    result = {}
+    for key, value in states.items():
+        result["{}".format(value.id)] = value.name
+    return render_template('7-states_list.html', states=result)
 
 
 if __name__ == "__main__":
