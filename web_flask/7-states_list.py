@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 '''this module is a script that starts a flask web application'''
+
 from models import storage
 from models.state import State
 # import the Flask class
@@ -7,8 +8,8 @@ from flask import Flask
 from flask import render_template
 # create an instance of the class
 app = Flask(__name__)
-#app.jinja_env.lstrip_blocks = True
-#app.jinja_env.trim_blocks = True
+# app.jinja_env.lstrip_blocks = True
+# app.jinja_env.trim_blocks = True
 
 
 @app.teardown_appcontext
