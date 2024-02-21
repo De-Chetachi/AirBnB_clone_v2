@@ -7,7 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column
 from sqlalchemy import DateTime
 from sqlalchemy import String
-
+from os import getenv
 Base = declarative_base()
 
 
@@ -20,9 +20,10 @@ class BaseModel:
         updated_at (sqlalchemy DateTime): The datetime of last update.
     """
 
-    id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        id = Column(String(60), primary_key=True, nullable=False, index=0)
+        created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+        updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Initialize a new BaseModel.
@@ -39,6 +40,11 @@ class BaseModel:
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
                     setattr(self, key, value)
+
+        else:
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
 
     def save(self):
         """Update updated_at with the current datetime."""
