@@ -20,7 +20,7 @@ class BaseModel:
         updated_at (sqlalchemy DateTime): The datetime of last update.
     """
 
-    id = Column(String(60), primary_key=True, nullable=False)
+    id = Column(String(60), primary_key=True, nullable=False, unique=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
